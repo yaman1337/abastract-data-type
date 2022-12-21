@@ -16,12 +16,27 @@ class graph:
                 if(arr[0] == v2):
                     print(f"Edge {v2} already exists.")
                     break
-            else:
-                self.container[v1].append([v2, weight])
-                print(f"Add edge {v1} to {v2} with weight of {weight}.")
+
+            self.container[v1].append([v2, weight])
+            print(f"Add edge {v1} to {v2} with weight of {weight}.")
                 
-    def findPath(self):
-        pass
+    def findPath(self, start, end, path=[]):
+        graph = self.container
+
+        path = path + [start]
+        if start == end:
+            return path
+        
+        if start not in graph:
+            return None
+        
+        for node in graph[start]:
+            if node[0] not in path:
+                newPath = self.findPath(node[0], end, path)
+                if newPath: 
+                    return newPath
+        return None
+        
         
     def displayInfo(self):
         print("""============== Display graph  ===============""")
@@ -43,5 +58,7 @@ g1.addEdge("A", "C", 4)
 g1.addEdge("A", "D", 2)
 g1.addEdge("B", "E", 4)
 
+print("============== Path ==============")
+print(g1.findPath("A", "E"))
 
 g1.displayInfo()
